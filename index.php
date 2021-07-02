@@ -1,3 +1,4 @@
+<?php require('php/login.php'); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -18,7 +19,7 @@
           <h4>Welcome Back</h4>
           <h1>Please, Login In</h1>
         </div>
-        <form action="">
+        <form action="php/login.php" method="POST">
           <div>
             <label class="sr-only" for="user">Entre com usuário</label>
             <input type="text" name="username" id="user" placeholder="Username">
@@ -50,5 +51,32 @@
       </section>
     </div>
   </main>
+  <div class="content-modal">
+    <!-- Menasgem de erro da sessao -->
+    <?php if(isset($_SESSION['error'])) { ?>
+      <div class="msg-error">
+        <?php
+          # exibe a mensagem de erro da sessão
+          echo $_SESSION['error'];
+          # apaga a sessão
+          unset($_SESSION['error']);
+        ?>
+      </div>
+    <?php } ?>
+
+    <!-- Menasgem de erro da sessao -->
+    <?php if(isset($_SESSION['loginerr'])) { ?>
+      <div class="msg-error">
+        <?php
+          # exibe a mensagem de erro da sessão
+          echo $_SESSION['loginerr'];
+          # apaga a sessão
+          unset($_SESSION['loginerr']);
+        ?>
+      </div>
+    <?php } ?>
+  </div>
+
+  <script src="scripts/error.js"></script>
 </body>
 </html>
