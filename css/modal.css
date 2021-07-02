@@ -1,0 +1,67 @@
+/* APLICA O SLIDE NO MODAL */
+.box-modal {
+  position: fixed;
+  height: 100vh;
+  width: 0px;
+
+  top: 0;
+  left: 0;
+  background: #000000;
+}
+
+.content-modal div {
+  width: 80%;
+  
+  /* Oculta o conteudo dentro do ".content div" */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ESTILIZAÇÃO DA MODAL */
+.head-modal {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.box-modal img {
+  margin: 52px;
+}
+
+.content-modal {
+  display: flex;
+  justify-content: center;
+}
+
+.content-modal li, a {
+  list-style: none;
+  text-align: center;
+  padding: 1rem 0;
+  font-family: "SF Pro Display";
+  font-weight: 400;
+  font-size: 3rem;
+  line-height: 61px;
+  color: var(--secondary1);
+}
+
+h2 {
+  color: white;
+  text-align: center;
+}
+
+/**/
+.buy-modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.buy-modal .head-modal {
+  padding: 2rem;
+}
+
+.hidden {
+  display: none;
+}

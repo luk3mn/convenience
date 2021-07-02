@@ -1,0 +1,12 @@
+body {
+  background: linear-gradient(180deg, #9183DE 0%, #A094E3 100%);
+}
+
+.container section form button {
+  font-size: 16px;
+  font-family: "SF Pro Display Bold";
+  line-height: 19px;
+  font-weight: 700;
+  color: var(--secondary1);
+  cursor: pointer;
+}

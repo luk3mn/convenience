@@ -1,0 +1,207 @@
+@font-face {
+  font-family: "SF Pro Display";
+  src: url('../fonts/FontsFree-Net-SFProDisplay-Regular.ttf');
+}
+@font-face {
+  font-family: "SF Pro Display Semibold";
+  src: url('../fonts/FontsFree-Net-SFProDisplay-Semibold.ttf');
+}
+@font-face {
+  font-family: "SF Pro Display Bold";
+  src: url('../fonts/FontsFree-Net-System-San-Francisco-Display-Bold.ttf');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "SF Pro Display";
+}
+
+html {
+  --bg-black: #08162B;
+  --bg-gradient1: #E5B2CA;
+  --primary1: #78258B;
+  --secondary1: #FFFFFF;
+
+  --bg-gradient2: #9183DE;
+  --primary2: #52439A;
+
+  --font-secondary: rgba(255, 255, 255, 0.75);
+  --font-input: #3C3C43;
+
+  --rectangle: #F29494;
+}
+
+body {
+  background: linear-gradient(180deg, #E5B2CA 0%, #CD82DE 100%);
+}
+
+.bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg img {
+  width: 353px;
+  height: 290px;
+  margin: 54px 30px 5px 30px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.container section div h1, h4 {
+  text-align: center;
+  font-style: normal;
+  font-family: "SF Pro Display Bold";
+}
+
+.container section div h4 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--font-secondary);
+}
+
+.container section div h1 {
+  line-height: 41px;
+  font-weight: 800;
+  font-size: 34px;
+  color: var(--secondary1);
+  margin-bottom: 37px;
+}
+
+.container section, form {
+  display: grid;
+  justify-content: center;
+}
+
+.container section form input, button {
+  /* margin-bottom: 1.4rem; */
+  width: 342px;
+  /* width: 100%; */
+  height: 74px;
+  border-radius: 37px;
+  outline: none;
+}
+
+.container section form div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.container section form div #img-user, #img-pass {
+  position: absolute;
+  margin-left: 21px;
+}
+
+.container section form input {
+  position: relative;
+  top: 2px;
+  color: var(--font-input);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17.9px;
+  padding-left: 60px;
+}
+
+
+.container section form button {
+  background: var(--primary1);
+  cursor: pointer;
+}
+
+.container section form button:hover {
+  background: #78258bbd;
+}
+
+.sr-only {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: react(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+
+  margin: 3.6rem 0;
+}
+
+.separator div:nth-child(2) {
+  color: var(--secondary1);
+  font-size: 14px;
+  margin: 0 1.5rem;
+}
+
+.separator div:nth-child(1),
+.separator div:nth-child(3) {
+  width: 100%;
+  border: 1px dashed var(--secondary1);
+}
+
+.create-account button {
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0px 25px 45px rgba(120, 37, 139, 0.25);
+  margin-bottom: 1.4rem;
+
+  font-size: 16px;
+  font-family: "SF Pro Display Bold";
+  line-height: 19px;
+  font-weight: 700;
+  color: var(--secondary1);
+  cursor: pointer;
+}
+
+.create-account button:hover {
+  background: rgba(255, 255, 255, 0.151);
+}
+
+@media screen and (min-width: 920px) {
+  body {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 50% 50%;
+  }
+
+  .bg img {
+    width: 80%;
+    height: 80%;
+    margin: 54px 30px 5px 30px;
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container section form input, button {
+    width: 442px;
+  }
+
+  .separator div:nth-child(1),
+  .separator div:nth-child(3) {
+    width: 100%;
+    border: 1px dashed var(--secondary1);
+  }
+}
+
+@media screen and (min-width: 610px) {
+  .container section form input, button {
+    width: 550px;
+  }
+}

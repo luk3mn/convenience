@@ -1,0 +1,17 @@
+.apresentation input {
+  margin: .5rem 0;
+}
+
+.apresentation button {
+  margin: 0;
+  font-size: 25px;
+  color: var(--secondary1);
+}
+
+@media screen and (min-width: 920px) {
+  .apresentation input, button {
+    position: relative;
+    right: 20px;
+  }
+
+}
