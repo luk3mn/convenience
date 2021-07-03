@@ -1,3 +1,4 @@
+<?php require('php/login.php'); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,7 +20,45 @@
           <h4>Hi there!</h4>
           <h1>Let´s Get Started</h1>
         </div>
-        <form action="">
+
+        <!-- MENSAGENS DE LOGIN -->
+        <div class="msg-return">
+          <!-- Menasgem de erro da sessao -->
+          <?php if(isset($_SESSION['error'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error'];
+                # apaga a sessão
+                unset($_SESSION['error']);
+              ?>
+            </div>
+          <?php } ?>
+          <!-- Menasgem de erro da sessao -->
+          <?php if(isset($_SESSION['loginerr'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['loginerr'];
+                # apaga a sessão
+                unset($_SESSION['loginerr']);
+              ?>
+            </div>
+          <?php } ?>
+          <!-- Menasgem de erro da sessao -->
+          <?php if(isset($_SESSION['created'])) { ?>
+            <div class="msg-ok">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['created'];
+                # apaga a sessão
+                unset($_SESSION['created']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+
+        <form action="php/login" method="POST">
           <div>
             <label class="sr-only" for="user">Entre com usuário</label>
             <input type="text" name="username" id="user" placeholder="Username">
@@ -43,7 +82,7 @@
       </div>
 
       <section class="create-account">
-        <a href="index.html">
+        <a href="index.php">
           <button name="create">
             Login
           </button>

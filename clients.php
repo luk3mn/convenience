@@ -1,3 +1,11 @@
+<?php
+session_start(); // inicia uma sessão
+
+// Testa se a sessão loginok não existe
+if (!isset($_SESSION['loginok'])) {
+  header('location: index.php'); // redireciona para o index novamente
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -16,7 +24,7 @@
       <img src="assets/open-nav.svg" alt="abrir menu" id="open">
       <div class="options">
         <div><a href="sale-items.html">Sale Items</a></div>
-        <div><a href="#">Categories</a></div>
+        <div><a href="categories.html">Categories</a></div>
         <div class="buy" id="open-buy">Buy</div>
       </div>
     </div>
@@ -29,7 +37,7 @@
           <h1>This is your convenience store!</h1>
         </div>
         <div>
-          <a href="clients.php" class="add">
+          <a href="#" class="add">
             <button>Add Clients</button>
             <img src="assets/client.svg" alt="cliente">
           </a>
@@ -40,10 +48,14 @@
         </div>
       </section>
       <section class="apresentation">
-        <form action="" method="POST">
-          <label class="sr-only" for="category">Category name</label>
-          <input type="text" id="category" name="category-name" placeholder="Category name" required>
-          <button name="register-category">Register</button>
+        <form action="php/crud.php" method="POST">
+          <label class="sr-only" for="name">Client name</label>
+          <input type="text" id="name" name="name" placeholder="Client name" required>
+          <label class="sr-only" for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="Address" required>
+          <label class="sr-only" for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" placeholder="Phone" required>
+          <button name="register-client">Register</button>
         </form>
       </section>  
     </div>

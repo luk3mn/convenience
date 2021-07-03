@@ -10,9 +10,9 @@ document.querySelector('#close').addEventListener("click", () => {
 
 /***** BUY *****/
 document.querySelector('#open-buy').addEventListener("click", () => {
-  document.querySelector('.buy-modal').classList.remove('hidden');
+  document.querySelector('.modal').classList.remove('hidden');
 })
 
 document.querySelector('#close-buy').addEventListener("click", () => {
-  document.querySelector('.buy-modal').classList.add('hidden');
+  document.querySelector('.modal').classList.add('hidden');
 })

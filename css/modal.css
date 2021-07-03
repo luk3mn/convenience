@@ -49,7 +49,7 @@ h2 {
 }
 
 /**/
-.buy-modal {
+.modal {
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -58,9 +58,10 @@ h2 {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
-.buy-modal .head-modal {
+.modal .head-modal {
   padding: 2rem;
 }
+
 
 .hidden {
   display: none;

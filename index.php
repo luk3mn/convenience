@@ -19,6 +19,34 @@
           <h4>Welcome Back</h4>
           <h1>Please, Login In</h1>
         </div>
+        
+        <!-- MENSAGENS DE LOGIN -->
+        <div class="msg-return">
+          <!-- Menasgem de erro da sessao -->
+          <?php if(isset($_SESSION['error'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error'];
+                # apaga a sessão
+                unset($_SESSION['error']);
+              ?>
+            </div>
+          <?php } ?>
+          
+          <!-- Menasgem de erro da sessao -->
+          <?php if(isset($_SESSION['loginerr'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['loginerr'];
+                # apaga a sessão
+                unset($_SESSION['loginerr']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+
         <form action="php/login.php" method="POST">
           <div>
             <label class="sr-only" for="user">Entre com usuário</label>
@@ -43,7 +71,7 @@
       </div>
 
       <section class="create-account">
-        <a href="create.html">
+        <a href="create.php">
           <button name="create">
             Create an Account
           </button>
@@ -51,32 +79,5 @@
       </section>
     </div>
   </main>
-  <div class="content-modal">
-    <!-- Menasgem de erro da sessao -->
-    <?php if(isset($_SESSION['error'])) { ?>
-      <div class="msg-error">
-        <?php
-          # exibe a mensagem de erro da sessão
-          echo $_SESSION['error'];
-          # apaga a sessão
-          unset($_SESSION['error']);
-        ?>
-      </div>
-    <?php } ?>
-
-    <!-- Menasgem de erro da sessao -->
-    <?php if(isset($_SESSION['loginerr'])) { ?>
-      <div class="msg-error">
-        <?php
-          # exibe a mensagem de erro da sessão
-          echo $_SESSION['loginerr'];
-          # apaga a sessão
-          unset($_SESSION['loginerr']);
-        ?>
-      </div>
-    <?php } ?>
-  </div>
-
-  <script src="scripts/error.js"></script>
 </body>
 </html>
