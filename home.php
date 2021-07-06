@@ -35,7 +35,7 @@ if (!isset($_SESSION['loginok'])) {
           <h4>Welcome</h4>
           <h1>This is your convenience store!</h1>
         </div>
-        <div>
+        <div class="box-buttons">
           <a href="clients.php" class="add">
             <button>Add Clients</button>
             <img src="assets/client.svg" alt="cliente">
@@ -58,8 +58,7 @@ if (!isset($_SESSION['loginok'])) {
     <div class="content-modal">
       <div>
         <ul>
-          <li><a href="home.html">Home</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="home.php">Home</a></li>
           <li><a href="php/logout.php">Logout</a></li>
         </ul>
       </div>

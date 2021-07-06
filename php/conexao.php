@@ -12,7 +12,18 @@ try {
     )
   ';
 
+  $tbclientes = '
+    CREATE TABLE CLIENTES (
+      cod_cli	INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      nome_cli	VARCHAR(50),
+      end_cli	VARCHAR(50),
+      fone_cli	CHAR(15)
+    )
+  ';
+  
+  # executa as queries
   $conexao->exec($tbusuarios);
+  $conexao->exec($tbclientes);
 
 } catch (PDOException $e) {
   echo "Code: " . $e->getCode() . " ||| Mensagem: " . $e->getMessage();

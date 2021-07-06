@@ -15,7 +15,7 @@
   </header>
   <main>
     <div class="container">
-      <section>
+      <section class="area-login">
         <div>
           <h4>Hi there!</h4>
           <h1>Let´s Get Started</h1>
@@ -58,7 +58,7 @@
           <?php } ?>
         </div>
 
-        <form action="php/login" method="POST">
+        <form class="fields-form" action="php/login" method="POST">
           <div>
             <label class="sr-only" for="user">Entre com usuário</label>
             <input type="text" name="username" id="user" placeholder="Username">

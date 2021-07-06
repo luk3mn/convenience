@@ -3,11 +3,6 @@ body {
   /* height: 100vh; */
 }
 
-
-.container {
-  width: 100%;
-}
-
 .navbar {
   display:  flex;
   justify-content: space-between;
@@ -50,40 +45,169 @@ body {
   height: 2.9rem;
 }
 
-.content div {
+.display-box {
+  display: block;
+}
+
+.container {
+  width: 100%;
+}
+
+.container .content .box-buttons {
   display: grid;
 }
 
-.content .add {
+.container .content .box-buttons .form-search {
   display: flex;
   align-items: center;
 }
 
-.content .add img {
+/* ====== Campo de busca e botões ====== */
+.container .content .box-buttons a {
+  display: flex;
+  align-items: center;
+}
+
+.container .content .box-buttons a img,
+.container .content .box-buttons .form-search #img-search {
   position: absolute;
   width: 50px;
   height: 50px;
   margin: 0 3rem;
 }
 
-.content .add button {
-  width: 100%;
-  margin: .4rem 1rem;
+.container .content .box-buttons .form-search #img-search {
+  background: url('../assets/search.svg') no-repeat;
+  outline: none;
+  cursor: pointer;
+  font-size: 0;
+}
 
+.container .content .box-buttons a button,
+.container .content .box-buttons .form-search #txt-search {
+  width: 100%;
+  border-radius: 1.2rem;
+  padding: 1.5rem;
+  margin: .4rem 1rem;
+  outline: none;
+
+  font-family: "SF Pro Display Bold";
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.container .content .box-buttons a button:hover {
+  background-color: rgb(202, 202, 202); 
+}
+
+.container .apresentation {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ====== REGISTER ====== */
+.apresentation .form-register {
+  /* display: none; */
+  padding: 1rem;
+}
+
+.apresentation .form-register input,
+.container .form-return input {
+  width: 100%;
+  padding: .7rem;
   border-radius: 1rem;
+  outline: none;
+
+  font-family: "SF Pro Display Bold";
+  font-size: 20px;
+}
+
+.apresentation .form-register .btn-register button,
+.apresentation .result-search .form-result button,
+.container .form-return button {
+  width: 10rem;
+  padding: .7rem;
+  border-radius: 1rem;
+
   font-family: "SF Pro Display Bold";
   font-size: 20px;
   cursor: pointer;
 }
 
-.content .add button:hover {
-  background-color: rgb(202, 202, 202); 
+.container .form-return {
+  padding: 0 1rem ;
+}
+
+.container .form-return input,
+.container .form-return button {
+  margin: .6rem 0;
+}
+
+.container .form-return button:nth-child(1) {
+  background: var(--primary2);
+  color: var(--secondary1);
+}
+
+.container .form-return button:nth-child(2) {
+  background: var(--secondary1);
+  color: var(--primary2);
+}
+
+.apresentation .form-register .btn-register button:nth-child(1) {
+  background: var(--primary1);
+  color: var(--secondary1);
+}
+
+.apresentation .form-register .btn-register button:nth-child(2) {
+  background: var(--secondary1);
+  color: var(--primary1);
 }
 
 .apresentation img {
   width: 300px;
   height: 290px;
   padding: 3rem;
+}
+
+/* ====== RESULTS SEARCH ====== */
+.apresentation .result-search {
+  width: 100%;
+}
+
+.apresentation .result-search .form-result {
+  display: flex;
+  justify-content: center;
+}
+
+.apresentation .result-search .form-result button:nth-child(1) {
+  background: rgba(72, 228, 85, 0.76);
+  margin: .1rem;
+}
+
+.apresentation .result-search .form-result button:nth-child(2) {
+  background: rgba(228, 72, 72, 0.87);
+  margin: .1rem;
+}
+
+.apresentation .result-search .form-result button:nth-child(3) {
+  background: rgba(72, 166, 228, 0.87);
+  margin: .1rem;
+}
+
+.apresentation .result-search .result-list ul li {
+  text-align: justify;
+  list-style: none;
+  margin: 1rem;
+
+  font-family: "SF Pro Display Bold";
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+}
+
+.apresentation .hide-result {
+  /* display: none; */
 }
 
 .sale-info input {
@@ -107,35 +231,25 @@ body {
 }
 
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 920px) {
   body {
-    display: grid;
-    grid-template-columns: 100%;
+    display: block;
+    height: 100vh;
   }
-
-  .navbar {
-    height: 100%;
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+  
+  .apresentation{
     height: 100%;
-  }
-
-  .apresentation {
-    width: 100%;
-  }
-}
-
-@media screen and (min-width: 920px) {
-  .apresentation {
-    display: flex;
-    align-items: center;
-    width: 35%;
-  }
-
-  .content {
-    width: 60%;
   }
 
   .navbar .options div a {

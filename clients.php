@@ -1,10 +1,44 @@
-<?php
-session_start(); // inicia uma sessão
+<?php include('php/crud.php'); ?>
 
+<?php
 // Testa se a sessão loginok não existe
 if (!isset($_SESSION['loginok'])) {
   header('location: index.php'); // redireciona para o index novamente
 }
+
+if (isset($_POST['search-client'])) {
+
+  $search = intval(filter_input(INPUT_POST, 'field_search', FILTER_SANITIZE_STRING));
+
+  if ($search) {
+    
+    # motagem da string sql
+    $sql = "SELECT * FROM clientes WHERE cod_cli = ?";
+
+    # prepara a string 
+    $stmt = $conexao->prepare($sql);
+    
+    # atribui os valores a string
+    $stmt->bindValue(1, $search);
+
+    # executa a query
+    $stmt->execute();
+    
+    # testa se o codigo existe no banco de dados
+    $notFound=0;
+    if ($stmt->rowCount() > 0) {
+      $rs = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+      # grava uma sesaõ com uma mensagem de erro
+      $_SESSION['error-search'] = 'Codigo de cliente não existe!';
+    }
+
+  } else {
+    # grava uma sesaõ com uma mensagem de erro
+    $_SESSION['error-search'] = 'Preecha o campo de pesquisa corretamente!';
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,11 +46,12 @@ if (!isset($_SESSION['loginok'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convenience - Products</title>
+  <title>Convenience - Clients</title>
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="css/registers.css">
+  <link rel="stylesheet" href="css/view-result.css">
 </head>
 <body>
   <header class="bg">
@@ -29,37 +64,109 @@ if (!isset($_SESSION['loginok'])) {
       </div>
     </div>
   </header>
-  <main>
+  
+  <main class="display-box">
     <div class="container">
       <section class="content">
         <div>
           <h4>Welcome</h4>
           <h1>This is your convenience store!</h1>
         </div>
-        <div>
-          <a href="#" class="add">
-            <button>Add Clients</button>
-            <img src="assets/client.svg" alt="cliente">
-          </a>
-          <a href="products.html" class="add">
+
+        <!-- sessão de erro -->
+        <div class="msg-return">
+          <?php if(isset($_SESSION['error-search'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error-search'];
+                # apaga a sessão
+                unset($_SESSION['error-search']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+
+        <div class="box-buttons">
+          <form class="form-search" action="" method="POST">
+            <label class="sr-only" for="txt-search">Pesquise o código do cliente</label>
+            <input type="text" name="field_search" id="txt-search" placeholder="Search customer code">
+            <button name="search-client" id="img-search" onclick="return search()"></button>
+          </form>
+          <a href="products.php">
             <button>Add Products</button>
-            <img src="assets/buy2.svg" alt="produtos">
-          </a>
+            <img src="assets/buy2.svg" alt="Produtos">
+          </a>  
         </div>
       </section>
       <section class="apresentation">
-        <form action="php/crud.php" method="POST">
+
+        <!-- sessão de erro -->
+        <div class="msg-return">
+          <?php if(isset($_SESSION['error'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error'];
+                # apaga a sessão
+                unset($_SESSION['error']);
+              ?>
+            </div>
+          <?php } ?>
+
+          <?php if(isset($_SESSION['success'])) { ?>
+            <div class="msg-ok">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['success'];
+                # apaga a sessão
+                unset($_SESSION['success']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+        
+        <!-- Formulario de cadastro -->
+        <form class="form-register" action="php/crud.php" method="POST">
           <label class="sr-only" for="name">Client name</label>
-          <input type="text" id="name" name="name" placeholder="Client name" required>
+          <input type="text" id="name" name="name" placeholder="Client name">
           <label class="sr-only" for="address">Address</label>
-          <input type="text" id="address" name="address" placeholder="Address" required>
+          <input type="text" id="address" name="address" placeholder="Address">
           <label class="sr-only" for="phone">Phone</label>
-          <input type="text" id="phone" name="phone" placeholder="Phone" required>
-          <button name="register-client">Register</button>
+          <input type="text" id="phone" name="phone" placeholder="Phone">
+          <div class="btn-register">
+            <button name="register-client">Register</button>
+            <button name="cancel">Cancelar</button>
+          </div>
         </form>
       </section>  
     </div>
+    
+    <div class="listing">
+      <?php if (isset($_POST['search-client']) && ($search) && ($stmt->rowCount() > 0) ) { ?>
+        <div class="title-result">
+          <h3>Search Result</h3>
+        </div>
+        <div class="result-search hide-result">
+          <div class="result-list">
+            <ul>
+              <li>Code: <?php echo $rs['cod_cli']; ?> </li>
+              <li>Name: <?php echo $rs['nome_cli']; ?> </li>
+              <li>Address: <?php echo $rs['end_cli']; ?> </li>
+              <li>Phone: <?php echo $rs['fone_cli']; ?> </li>
+            </ul>  
+          </div>
+        </div>
+        <div class="btn-result">
+          <form class="form-result" action="php/crud.php" method="POST">
+            <button>Alter</button>
+            <button name="remove-cli">Remove</button>
+          </form>
+        </div>
+      <?php } ?>
+    </div>
   </main>
+
   <div class="box-modal">
     <div class="head-modal">
       <img src="assets/close.svg" alt="close" id="close">
@@ -68,7 +175,6 @@ if (!isset($_SESSION['loginok'])) {
       <div>
           <ul>
             <li><a href="home.html">Home</a></li>
-            <li><a href="#">About Us</a></li>
             <li><a href="php/logout.php">Logout</a></li>
           </ul>
         </div>
@@ -89,5 +195,6 @@ if (!isset($_SESSION['loginok'])) {
       </div>
     </div>
     <script src="scripts/modal.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
