@@ -22,8 +22,8 @@ if (!isset($_SESSION['loginok'])) {
     <div class="navbar">
       <img src="assets/open-nav.svg" alt="abrir menu" id="open">
       <div class="options">
-        <div><a href="sale-items.html">Sale Items</a></div>
-        <div><a href="categories.html">Categories</a></div>
+        <div><a href="sale-items.php">Sale Items</a></div>
+        <div><a href="categories.php">Categories</a></div>
         <div class="buy" id="open-buy">Buy</div>
       </div>
     </div>
@@ -40,7 +40,7 @@ if (!isset($_SESSION['loginok'])) {
             <button>Add Clients</button>
             <img src="assets/client.svg" alt="cliente">
           </a>
-          <a href="products.html" class="add">
+          <a href="products.php" class="add">
             <button>Add Products</button>
             <img src="assets/buy2.svg" alt="produtos">
           </a>
@@ -79,6 +79,5 @@ if (!isset($_SESSION['loginok'])) {
     </div>
   </div>
     <script src="scripts/modal.js"></script>
-    <script src="scripts/main.js"></script>
 </body>
 </html>

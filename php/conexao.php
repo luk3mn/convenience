@@ -20,10 +20,30 @@ try {
       fone_cli	CHAR(15)
     )
   ';
+
+  $tbprodutos = '
+    CREATE TABLE PRODUTOS (
+      cod_prod    INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      codigo_cat  SMALLINT NOT NULL,
+      nome_pro	  VARCHAR(30) NOT NULL,
+      est_pro	    SMALLINT NOT NULL,
+      unid_pro	  CHAR(10) NOT NULL,
+      preco_pro	  DECIMAL (8,2) NOT NULL
+    )
+  ';
+
+  $tbcategorias = '
+    CREATE TABLE CATEGORIAS (
+      cod_cat	SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      nome_cat	CHAR(25) NOT NULL
+    )
+  ';
   
   # executa as queries
   $conexao->exec($tbusuarios);
   $conexao->exec($tbclientes);
+  $conexao->exec($tbprodutos);
+  $conexao->exec($tbcategorias);
 
 } catch (PDOException $e) {
   echo "Code: " . $e->getCode() . " ||| Mensagem: " . $e->getMessage();
