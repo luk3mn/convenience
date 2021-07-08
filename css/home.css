@@ -181,9 +181,10 @@ body {
   justify-content: center;
 }
 
-.sale-info input {
+.sale-info input,
+.sale-info button {
   padding: .8rem;
-  margin: 1rem 0;
+  margin: .5rem 0;
   border: none;
   border-radius: .6rem;
   font-size: 20px;
@@ -191,12 +192,12 @@ body {
   outline: none;
 }
 
-.sale-info input:nth-child(5) {
+.sale-info button {
   background-color: var(--primary2);
   color: var(--secondary1);
 }
 
-.sale-info input:nth-child(5):hover {
+.sale-info button:hover {
   background-color: #52439aad;
   color: var(--secondary1);
 }

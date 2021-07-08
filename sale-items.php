@@ -7,14 +7,14 @@ if (!isset($_SESSION['loginok'])) {
 }
 
 # READ
-if (isset($_POST['search-category'])) {
+if (isset($_POST['search-saleItems'])) {
 
   $search = intval(filter_input(INPUT_POST, 'field_search', FILTER_SANITIZE_STRING));
 
   if ($search) {
     
     # prepara a string
-    $stmt = $conexao->prepare($sql = "SELECT * FROM categorias WHERE cod_cat = ?");
+    $stmt = $conexao->prepare($sql = "SELECT * FROM itens_vendidos WHERE cod_item = ?");
     $stmt->bindValue(1, $search);
     $stmt->execute();
     
@@ -22,7 +22,7 @@ if (isset($_POST['search-category'])) {
     if ($stmt->rowCount() > 0) {
       $rs = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
-      $_SESSION['error-search'] = 'Codigo de produto não existe!';
+      $_SESSION['error-search'] = 'Código de item vendido não existe!';
     }
 
   } else {
@@ -32,13 +32,13 @@ if (isset($_POST['search-category'])) {
 
 
 # READ -> Lê os dados para a alteração
-if (isset($_GET['catEdit'])) {
+if (isset($_GET['itemEdit'])) {
   # recebe a variável
-  $edit = $_GET['catEdit'];
+  $edit = $_GET['itemEdit'];
   $visible = true;
 
   # preparando a string
-  $stmt = $conexao->prepare("SELECT * FROM categorias WHERE cod_cat = ?");
+  $stmt = $conexao->prepare("SELECT * FROM itens_vendidos WHERE cod_cat = ?");
   $stmt->bindValue(1, $edit);
   $stmt->execute();
 
@@ -53,7 +53,7 @@ if (isset($_GET['catEdit'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convenience - Categorias</title>
+  <title>Convenience - Itens</title>
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/modal.css">
@@ -66,7 +66,7 @@ if (isset($_GET['catEdit'])) {
       <img src="assets/open-nav.svg" alt="abrir menu" id="open">
       <div class="options">
         <div><a href="sale-items.php">Sale Items</a></div>
-        <div><a href="categories.php">Categories</a></div>
+        <div><a href="sale-items.php">Categories</a></div>
         <div class="buy" id="open-buy">Buy</div>
       </div>
     </div>
@@ -99,7 +99,7 @@ if (isset($_GET['catEdit'])) {
             <form class="form-search" action="" method="POST">
               <label class="sr-only" for="txt-search">Pesquise o código do categorias</label>
               <input type="text" name="field_search" id="txt-search" placeholder="Search customer code">
-              <button name="search-category" id="img-search" onclick="return search()"></button>
+              <button name="search-saleItems" id="img-search" onclick="return search()"></button>
             </form>
           <?php } ?>
           <a href="clients.php">
@@ -141,7 +141,7 @@ if (isset($_GET['catEdit'])) {
         
         <!-- Formulario de cadastro ou lista os dados pesquisados -->
           
-          <?php if (isset($_POST['search-category']) && ($search) && ($stmt->rowCount() > 0)) { ?>
+          <?php if (isset($_POST['search-saleItems']) && ($search) && ($stmt->rowCount() > 0)) { ?>
             <div class="listing">
               <div class="title-result">
                 <h3>Search Result</h3>
@@ -149,15 +149,16 @@ if (isset($_GET['catEdit'])) {
               <div class="result-search">
                 <div class="result-list">
                   <ul>
-                    <li>Code: <?php echo $rs['cod_cat']; ?> </li>  
-                    <li>Name: <?php echo $rs['nome_cat']; ?> </li>
+                    <li>Sale number: <?php echo $rs['nun_venda']; ?> </li>  
+                    <li>Product code: <?php echo $rs['cod_prod']; ?> </li>
+                    <li>Quantity of items: <?php echo $rs['qtde_item_vend']; ?> </li>
                   </ul>  
                 </div>
               </div>
               <div class="btn-result">
-                <a href="categories.php?catEdit=<?php echo $rs['cod_cat']; ?>">Alter</a>
-                <a href="php/crud.php?catDel=<?php echo $rs['cod_cat']; ?>">Remove</a>
-                <a href="categories.php">Back</a>
+                <a href="sale-items.php?itemEdit=<?php echo $rs['cod_item']; ?>">Alter</a>
+                <a href="php/crud.php?itemDel=<?php echo $rs['cod_item']; ?>">Remove</a>
+                <a href="sale-items.php">Back</a>
               </div>
             </div>
           <?php } else { ?>
@@ -167,16 +168,20 @@ if (isset($_GET['catEdit'])) {
             </div>
           <?php } ?>
           <form class="form-register" action="php/crud.php" method="POST">
-            <input type="hidden" name="codcat" value="<?php if ($visible) echo $rs['cod_cat']; ?>">
-            <label class="sr-only" for="name">Category name</label>
-            <input type="text" name="name" placeholder="Category name" value="<?php if ($visible) echo $rs['nome_cat']; ?>">
+            <input type="hidden" name="coditem" value="<?php if ($visible) echo $rs['cod_item']; ?>">
+            <label class="sr-only" for="quantity">Quantity of items sold</label>
+            <input type="text" id="quantity" name="quantity" placeholder="Quantity of items sold" value="<?php if ($visible) echo $rs['qtde_item_vend']; ?>">
+            <label class="sr-only" for="sale-number">Sale number</label>
+            <input type="text" id="sale-number" name="sale-number" placeholder="Sale number" value="<?php if ($visible) echo $rs['num_venda']; ?>">
+            <label class="sr-only" for="codprod">Product code</label>
+            <input type="text" id="codprod" name="codprod" placeholder="Product code" value="<?php if ($visible) echo $rs['cod_prod']; ?>">
             <div class="btn-register">
             <?php if (!$visible) { ?>
-              <button name="register-category">Register</button>
+              <button name="register-saleItems">Register</button>
               <button name="cancel">Cancelar</button>
             <?php } else { ?>
-              <button name="alter-cat" style="background: rgba(62, 235, 105, 0.568)">Confirme</button>
-              <button name="back-category" style="background: rgba(72, 166, 228, 0.87); color:#fff;">Cancelar</button>
+              <button name="alter-saleItem" style="background: rgba(62, 235, 105, 0.568)">Confirme</button>
+              <button name="back-saleItems" style="background: rgba(72, 166, 228, 0.87); color:#fff;">Cancelar</button>
             <?php } ?>
             </div>
           </form>

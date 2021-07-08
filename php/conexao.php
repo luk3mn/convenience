@@ -34,8 +34,25 @@ try {
 
   $tbcategorias = '
     CREATE TABLE CATEGORIAS (
-      cod_cat	SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      cod_cat	  SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       nome_cat	CHAR(25) NOT NULL
+    )
+  ';
+
+  $tbvendas = '
+    CREATE TABLE VENDAS (
+      num_venda	  INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      data_venda	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      cod_cli	    INTEGER NOT NULL
+    )
+  ';
+
+  $tbitens_vendidos = '
+    CREATE TABLE      ITENS_VENDIDOS (
+      cod_item        INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      num_venda	      INTEGER NOT NULL,
+      cod_prod	      INTEGER NOT NULL,
+      qtde_item_vend	SMALLINT NOT NULL
     )
   ';
   
@@ -44,6 +61,8 @@ try {
   $conexao->exec($tbclientes);
   $conexao->exec($tbprodutos);
   $conexao->exec($tbcategorias);
+  $conexao->exec($tbvendas);
+  $conexao->exec($tbitens_vendidos);
 
 } catch (PDOException $e) {
   echo "Code: " . $e->getCode() . " ||| Mensagem: " . $e->getMessage();

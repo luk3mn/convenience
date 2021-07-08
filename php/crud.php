@@ -302,8 +302,77 @@ if (isset($_POST['back-product'])) {
 }
 
 /* ========= BUY ========= */
+# CREATE -> Buy
+if (isset($_POST['register-sale'])) {
+  $codcli = intval(filter_input(INPUT_POST, 'codcli', FILTER_SANITIZE_STRING));
+  
+  if ($codcli) {
+
+    #valida o codigo do cliente
+    $stmt = $conexao->prepare("SELECT cod_cli FROM clientes WHERE cod_cli=?");
+    $stmt->bindValue(1, $codcli);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      # prepara a string 
+      $stmt = $conexao->prepare("INSERT INTO vendas (cod_cli) VALUES ((SELECT cod_cli FROM clientes WHERE cod_cli=?))");
+      $stmt->bindValue(1, $codcli);
+  
+      # valida e executa a insersão no banco da dados
+      if ($stmt->execute() > 0) {
+        $_SESSION['success'] = 'Venda cadastrada com sucesso!';
+      } else {
+        $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
+      }
+    } else {
+      $_SESSION['error'] = "Código de cliente não existe!";
+    }
+    
+  } else {
+    # grava uma sesaõ com uma mensagem de erro
+    $_SESSION['error'] = 'Preecha todos os campos corretamente!';
+  }
+
+  # redirciona para categorias
+  header('location: ../home.php');
+}
 
 /* ========= SALE ITEMS ========= */
+# CREATE -> Sale items
+if (isset($_POST['register-saleItems'])) {
+  $quantity = intval(filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_STRING));
+  $saleNum = intval(filter_input(INPUT_POST, 'sale-number', FILTER_SANITIZE_STRING));
+  $codprod = intval(filter_input(INPUT_POST, 'codprod', FILTER_SANITIZE_STRING));
+  
+  if (($quantity) && ($saleNum) && ($codprod)) {
+
+    #valida o codigo do cliente
+    // $stmt = $conexao->prepare("SELECT cod_cli FROM clientes WHERE cod_cli=?");
+    // $stmt->bindValue(1, $codcli);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      # prepara a string 
+      $stmt = $conexao->prepare("INSERT INTO vendas (cod_cli) VALUES ((SELECT cod_cli FROM clientes WHERE cod_cli=?))");
+      $stmt->bindValue(1, $codcli);
+  
+      # valida e executa a insersão no banco da dados
+      if ($stmt->execute() > 0) {
+        $_SESSION['success'] = 'Item vendido!';
+      } else {
+        $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
+      }
+    } else {
+      // $_SESSION['error'] = "Código de cliente não existe!";
+    }
+  } else {
+    # grava uma sesaõ com uma mensagem de erro
+    $_SESSION['error'] = 'Preecha todos os campos corretamente!';
+  }
+
+  # redirciona para categorias
+  header('location: ../sale-items.php');
+}
 
 /* CANCELA E VOLTA PRA HOME */
 if (isset($_POST['cancel'])) {

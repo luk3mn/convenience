@@ -225,12 +225,10 @@ if (isset($_GET['edit'])) {
       <img src="assets/close.svg" alt="close" id="close-buy">
     </div>
     <div class="content-modal sale-info">
-      <form action="" method="POST">
-        <label class="sr-only" for="num">Sale number</label>
-        <input type="text" id="num" name="sale-number" placeholder="Sale Number">
+      <form class="form-modal" action="php/crud.php" method="POST">
         <label class="sr-only" for="client-code">Client code</label>
-        <input type="text" id="client-code" name="client-code" placeholder="Client Code">
-        <input type="button" name="register-sale" value="Register">
+        <input type="text" name="codcli" placeholder="Client Code">
+        <button name="register-sale">Register</button>
       </form>
     </div>
   </div>  

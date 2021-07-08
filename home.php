@@ -47,6 +47,30 @@ if (!isset($_SESSION['loginok'])) {
         </div>
       </section>
       <section class="apresentation">
+        <div class="msg-return">
+          <?php if(isset($_SESSION['error'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error'];
+                # apaga a sessão
+                unset($_SESSION['error']);
+              ?>
+            </div>
+          <?php } ?>
+
+          <?php if(isset($_SESSION['success'])) { ?>
+            <div class="msg-ok">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['success'];
+                # apaga a sessão
+                unset($_SESSION['success']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+
         <img src="assets/buy-ilustration.svg" alt="">
       </section>  
     </div>
@@ -69,15 +93,13 @@ if (!isset($_SESSION['loginok'])) {
       <img src="assets/close.svg" alt="close" id="close-buy">
     </div>
     <div class="content-modal sale-info">
-      <form action="" method="POST">
-        <label class="sr-only" for="num">Sale number</label>
-        <input type="text" id="num" name="sale-number" placeholder="Sale Number">
+      <form class="form-modal" action="php/crud.php" method="POST">
         <label class="sr-only" for="client-code">Client code</label>
-        <input type="text" id="client-code" name="client-code" placeholder="Client Code">
-        <input type="button" name="register-sale" value="Register">
+        <input type="text" name="codcli" placeholder="Client Code">
+        <button name="register-sale">Register</button>
       </form>
     </div>
   </div>
-    <script src="scripts/modal.js"></script>
+  <script src="scripts/modal.js"></script>
 </body>
 </html>
