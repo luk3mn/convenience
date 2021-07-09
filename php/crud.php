@@ -346,24 +346,50 @@ if (isset($_POST['register-saleItems'])) {
   
   if (($quantity) && ($saleNum) && ($codprod)) {
 
-    #valida o codigo do cliente
-    // $stmt = $conexao->prepare("SELECT cod_cli FROM clientes WHERE cod_cli=?");
-    // $stmt->bindValue(1, $codcli);
+    # consulta sql na tabela de vendas
+    $stmt = $conexao->prepare("SELECT * FROM vendas WHERE num_venda=?");
+    $stmt->bindValue(1, $saleNum);
     $stmt->execute();
 
+    # valida se o registro foi encontrado
     if ($stmt->rowCount() > 0) {
-      # prepara a string 
-      $stmt = $conexao->prepare("INSERT INTO vendas (cod_cli) VALUES ((SELECT cod_cli FROM clientes WHERE cod_cli=?))");
-      $stmt->bindValue(1, $codcli);
-  
-      # valida e executa a insersão no banco da dados
-      if ($stmt->execute() > 0) {
-        $_SESSION['success'] = 'Item vendido!';
-      } else {
-        $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
-      }
+
+      # consulta sql na tabela de produtos
+      $stmt = $conexao->prepare("SELECT * FROM produtos WHERE cod_prod=?");
+      $stmt->bindValue(1, $codprod);
+      $stmt->execute();
+
+      if ($stmt->rowCount() > 0) {
+        // $rs=$stmt->fetch(PDO::FETCH_ASSOC);
+
+        // # valida a quantida de itens do produto em estoque
+        // if ($rs['est_pro'] >= $quantity) {
+          # prepara a string 
+          $stmt = $conexao->prepare("INSERT INTO itens_vendidos (num_venda,cod_prod,qtde_item_vend) VALUES ((SELECT num_venda FROM vendas WHERE num_venda=?), (SELECT cod_prod FROM produtos WHERE cod_prod=?), ?)");
+          $stmt->bindValue(1, $saleNum);
+          $stmt->bindValue(2, $codprod);
+          $stmt->bindValue(3, $quantity);
+      
+          # valida e executa a insersão no banco da dados
+          if ($stmt->execute() > 0) {
+            # realizar update no estoque de produtos
+            $stmt = $conexao->prepare("UPDATE produtos SET est_pro= (est_pro - (SELECT qtde_item_vend FROM itens_vendidos WHERE cod_prod=?)) WHERE cod_prod=?");
+            $stmt->bindValue(1, $codprod);
+            $stmt->bindValue(2, $codprod);
+            $stmt->execute();     
+
+            $_SESSION['success'] = 'Item vendido!';
+          } else {
+            $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
+          }
+        } else {
+          $_SESSION['error'] = 'Produto em estoque é insufuciente!';
+        }
+      // } else {
+      //   $_SESSION['error'] = 'Produto não existe';
+      // }
     } else {
-      // $_SESSION['error'] = "Código de cliente não existe!";
+      $_SESSION['error'] = "Venda não existe!";
     }
   } else {
     # grava uma sesaõ com uma mensagem de erro

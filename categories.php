@@ -76,8 +76,8 @@ if (isset($_GET['catEdit'])) {
     <div class="container">
       <section class="content">
         <div>
-          <h4>Welcome</h4>
-          <h1>This is your convenience store!</h1>
+          <h4>Categories</h4>
+          <h1>Category registration!</h1>
         </div>
 
         <!-- sessão de erro -->

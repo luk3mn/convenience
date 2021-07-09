@@ -76,8 +76,8 @@ if (isset($_GET['proEdit'])) {
     <div class="container">
       <section class="content">
         <div>
-          <h4>Welcome</h4>
-          <h1>This is your convenience store!</h1>
+          <h4>Products</h4>
+          <h1>Produc registration!</h1>
         </div>
 
         <!-- sessão de erro -->

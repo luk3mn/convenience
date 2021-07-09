@@ -91,8 +91,8 @@ if (isset($_GET['edit'])) {
     <div class="container">
       <section class="content">
         <div>
-          <h4>Welcome</h4>
-          <h1>This is your convenience store!</h1>
+          <h4>Clients</h4>
+          <h1>Customer base!</h1>
         </div>
 
         <!-- sessão de erro -->

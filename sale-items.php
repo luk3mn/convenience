@@ -66,7 +66,7 @@ if (isset($_GET['itemEdit'])) {
       <img src="assets/open-nav.svg" alt="abrir menu" id="open">
       <div class="options">
         <div><a href="sale-items.php">Sale Items</a></div>
-        <div><a href="sale-items.php">Categories</a></div>
+        <div><a href="categories.php">Categories</a></div>
         <div class="buy" id="open-buy">Buy</div>
       </div>
     </div>
@@ -76,8 +76,8 @@ if (isset($_GET['itemEdit'])) {
     <div class="container">
       <section class="content">
         <div>
-          <h4>Welcome</h4>
-          <h1>This is your convenience store!</h1>
+          <h4>Sale Items</h4>
+          <h1>Register of sold items!</h1>
         </div>
 
         <!-- sessão de erro -->
