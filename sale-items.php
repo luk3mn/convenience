@@ -38,7 +38,7 @@ if (isset($_GET['itemEdit'])) {
   $visible = true;
 
   # preparando a string
-  $stmt = $conexao->prepare("SELECT * FROM itens_vendidos WHERE cod_cat = ?");
+  $stmt = $conexao->prepare("SELECT * FROM itens_vendidos WHERE cod_item=?");
   $stmt->bindValue(1, $edit);
   $stmt->execute();
 
@@ -97,8 +97,8 @@ if (isset($_GET['itemEdit'])) {
         <div class="box-buttons">
           <?php if (!$visible) { ?>
             <form class="form-search" action="" method="POST">
-              <label class="sr-only" for="txt-search">Pesquise o código do categorias</label>
-              <input type="text" name="field_search" id="txt-search" placeholder="Search customer code">
+              <label class="sr-only" for="txt-search">Search code of sold items</label>
+              <input type="text" name="field_search" id="txt-search" placeholder="Search code of sold items">
               <button name="search-saleItems" id="img-search" onclick="return search()"></button>
             </form>
           <?php } ?>
@@ -149,7 +149,7 @@ if (isset($_GET['itemEdit'])) {
               <div class="result-search">
                 <div class="result-list">
                   <ul>
-                    <li>Sale number: <?php echo $rs['nun_venda']; ?> </li>  
+                    <li>Sale number: <?php echo $rs['num_venda']; ?> </li>  
                     <li>Product code: <?php echo $rs['cod_prod']; ?> </li>
                     <li>Quantity of items: <?php echo $rs['qtde_item_vend']; ?> </li>
                   </ul>  
@@ -168,6 +168,7 @@ if (isset($_GET['itemEdit'])) {
             </div>
           <?php } ?>
           <form class="form-register" action="php/crud.php" method="POST">
+            <input type="hidden" name="dbquantity" value="<?php if ($visible) echo $rs['qtde_item_vend']; ?>">
             <input type="hidden" name="coditem" value="<?php if ($visible) echo $rs['cod_item']; ?>">
             <label class="sr-only" for="quantity">Quantity of items sold</label>
             <input type="text" id="quantity" name="quantity" placeholder="Quantity of items sold" value="<?php if ($visible) echo $rs['qtde_item_vend']; ?>">

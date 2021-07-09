@@ -1,9 +1,42 @@
+<?php include('php/conexao.php'); ?>
 <?php
-session_start(); // inicia uma sessão
+# inicia a sessao;
+session_start();
 
 // Testa se a sessão loginok não existe
 if (!isset($_SESSION['loginok'])) {
   header('location: index.php'); // redireciona para o index novamente
+}
+
+# READ
+if (isset($_POST['search-sale'])) {
+
+  $search = intval(filter_input(INPUT_POST, 'field_search', FILTER_SANITIZE_STRING));
+  if ($search) {
+    
+    $sql = '
+      SELECT * FROM itens_vendidos iv 
+      INNER JOIN vendas v ON iv.num_venda=v.num_venda 
+      INNER JOIN produtos p ON iv.cod_prod=p.cod_prod 
+      INNER JOIN categorias c ON p.codigo_cat=c.cod_cat 
+      INNER JOIN clientes cl ON cl.cod_cli=v.cod_cli 
+      WHERE cod_item=?
+    ';
+    
+    # prepara a string
+    $stmt = $conexao->prepare($sql);
+    $stmt->bindValue(1, $search);
+    $stmt->execute();
+    
+    # testa se o codigo existe no banco de dados
+    if ($stmt->rowCount() > 0) {
+      $rs = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+      $_SESSION['error-search'] = 'Código de item vendido não existe!';
+    }
+  } else {
+    $_SESSION['error-search'] = 'Preecha o campo de pesquisa corretamente!';
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -16,6 +49,7 @@ if (!isset($_SESSION['loginok'])) {
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/view-result.css">
 </head>
 <body>
   <header class="bg">
@@ -35,7 +69,27 @@ if (!isset($_SESSION['loginok'])) {
           <h4>Welcome</h4>
           <h1>This is your convenience store!</h1>
         </div>
+
+        <!-- sessão de erro -->
+        <div class="msg-return">
+          <?php if(isset($_SESSION['error-search'])) { ?>
+            <div class="msg-error">
+              <?php
+                # exibe a mensagem de erro da sessão
+                echo $_SESSION['error-search'];
+                # apaga a sessão
+                unset($_SESSION['error-search']);
+              ?>
+            </div>
+          <?php } ?>
+        </div>
+
         <div class="box-buttons">
+          <form class="form-search" action="" method="POST">
+            <label class="sr-only" for="txt-search">Pesquise o código da venda</label>
+            <input type="text" name="field_search" id="txt-search" placeholder="Search for sale code">
+            <button name="search-sale" id="img-search" onclick="return search()"></button>
+          </form>
           <a href="clients.php" class="add">
             <button>Add Clients</button>
             <img src="assets/client.svg" alt="cliente">
@@ -70,8 +124,32 @@ if (!isset($_SESSION['loginok'])) {
             </div>
           <?php } ?>
         </div>
-
-        <img src="assets/buy-ilustration.svg" alt="">
+        
+        <?php if (isset($_POST['search-sale']) && ($search) && ($stmt->rowCount() > 0)) { ?>
+          <div class="listing">
+            <div class="title-result">
+              <h3>Search Result</h3>
+            </div>
+            <div class="result-search">
+              <div class="result-list">
+                <ul>
+                  <li>Client name: <?php echo $rs['nome_cli']; ?> </li>
+                  <li>Sale number: <?php echo $rs['num_venda']; ?> </li>
+                  <li>Product: <?php echo $rs['nome_pro']; ?> </li>
+                  <li>Category: <?php echo $rs['nome_cat']; ?> </li>
+                  <li>Sale date: <?php echo $rs['data_venda']; ?> </li>
+                  <li>Quantity: <?php echo $rs['qtde_item_vend']; ?> </li>
+                  <li>Amount: <?php echo ' R$'.$rs['qtde_item_vend']*$rs['preco_pro'];   ?> </li>
+                </ul>  
+              </div>
+            </div>
+            <div class="btn-result">
+              <a href="home.php">Close</a>
+            </div>
+          </div>
+        <?php } else { ?>
+          <img src="assets/buy-ilustration.svg" alt="compras">
+        <?php } ?>
       </section>  
     </div>
   </main>

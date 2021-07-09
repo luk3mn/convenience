@@ -360,10 +360,10 @@ if (isset($_POST['register-saleItems'])) {
       $stmt->execute();
 
       if ($stmt->rowCount() > 0) {
-        // $rs=$stmt->fetch(PDO::FETCH_ASSOC);
+        $rs=$stmt->fetch(PDO::FETCH_ASSOC);
 
-        // # valida a quantida de itens do produto em estoque
-        // if ($rs['est_pro'] >= $quantity) {
+        # valida a quantida de itens do produto em estoque
+        if ($rs['est_pro'] >= $quantity) {
           # prepara a string 
           $stmt = $conexao->prepare("INSERT INTO itens_vendidos (num_venda,cod_prod,qtde_item_vend) VALUES ((SELECT num_venda FROM vendas WHERE num_venda=?), (SELECT cod_prod FROM produtos WHERE cod_prod=?), ?)");
           $stmt->bindValue(1, $saleNum);
@@ -373,8 +373,8 @@ if (isset($_POST['register-saleItems'])) {
           # valida e executa a insersão no banco da dados
           if ($stmt->execute() > 0) {
             # realizar update no estoque de produtos
-            $stmt = $conexao->prepare("UPDATE produtos SET est_pro= (est_pro - (SELECT qtde_item_vend FROM itens_vendidos WHERE cod_prod=?)) WHERE cod_prod=?");
-            $stmt->bindValue(1, $codprod);
+            $stmt = $conexao->prepare("UPDATE produtos SET est_pro= (est_pro - ?) WHERE cod_prod=?");
+            $stmt->bindValue(1, $quantity);
             $stmt->bindValue(2, $codprod);
             $stmt->execute();     
 
@@ -385,9 +385,9 @@ if (isset($_POST['register-saleItems'])) {
         } else {
           $_SESSION['error'] = 'Produto em estoque é insufuciente!';
         }
-      // } else {
-      //   $_SESSION['error'] = 'Produto não existe';
-      // }
+      } else {
+        $_SESSION['error'] = 'Produto não existe';
+      }
     } else {
       $_SESSION['error'] = "Venda não existe!";
     }
@@ -397,6 +397,74 @@ if (isset($_POST['register-saleItems'])) {
   }
 
   # redirciona para categorias
+  header('location: ../sale-items.php');
+}
+
+# UPDATE -> Sale Items
+if (isset($_POST['alter-saleItem'])) {
+
+  # pega os valore do formulário
+  $dbQuantItem = intval(filter_input(INPUT_POST, 'dbquantity', FILTER_SANITIZE_STRING));
+  $codItem = filter_input(INPUT_POST, 'coditem', FILTER_SANITIZE_STRING);
+  $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_STRING);
+  $saleNum = filter_input(INPUT_POST, 'sale-number', FILTER_SANITIZE_STRING);
+  $codProd = filter_input(INPUT_POST, 'codprod', FILTER_SANITIZE_STRING);
+
+  if (($quantity) && ($saleNum) && ($codProd)) {
+    
+    # consulta sql na tabela de produtos
+    $stmt = $conexao->prepare("SELECT * FROM produtos WHERE cod_prod=?");
+    $stmt->bindValue(1, $codProd);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+      $rs=$stmt->fetch(PDO::FETCH_ASSOC);
+      
+      # testa a quantidade passada com a quantidade em estoque
+      if ($rs['est_pro'] >= $quantity) {
+        # prepara a string sql
+        $stmt = $conexao->prepare("UPDATE itens_vendidos SET num_venda=?, cod_prod=?, qtde_item_vend=? WHERE cod_item=?");
+        $stmt->bindValue(1, $saleNum);
+        $stmt->bindValue(2, $codProd);
+        $stmt->bindValue(3, $quantity);
+        $stmt->bindValue(4, $codItem);
+    
+        if ($stmt->execute() > 0) {
+          $_SESSION['success'] = 'Item de venda alterado com sucesso!';
+        } else {
+          $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
+        }
+      } else {
+        $_SESSION['error'] = 'Produto em estoque é insuficiente!';
+      }
+
+    } else {
+      $_SESSION['error'] = 'Nenhum registro encontrado!';
+    }
+
+    
+  } else {
+    $_SESSION['error'] = 'Preencha todos os campos corretamente';
+  }
+
+  header('location: ../sale-items.php');
+}
+
+#DELETE -> Sale Items
+if (isset($_GET['itemDel'])) {
+  $id = $_GET['itemDel'];
+
+  $stmt = $conexao->prepare("DELETE FROM itens_vendidos WHERE cod_item=?");
+  $stmt->bindValue(1, $id);
+  
+  # testa se executou
+  if ($stmt->execute() > 0) {
+    $_SESSION['success'] = 'Item deletado!';
+  } else {
+    $_SESSION['error'] = 'Ocorreu um erro! Tente novamente';
+  }
+
+  # redireciona para sale-itmes.php
   header('location: ../sale-items.php');
 }
 

@@ -50,6 +50,7 @@
   color: var(--secondary1);
   font-family: "SF Pro Display Bold";
   font-size: 20px;
+  margin: 0 1rem;
 }
 
 /* Butões para manipular os resultados obtidos */

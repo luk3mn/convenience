@@ -97,8 +97,8 @@ if (isset($_GET['proEdit'])) {
         <div class="box-buttons">
           <?php if (!$visible) { ?>
             <form class="form-search" action="" method="POST">
-              <label class="sr-only" for="txt-search">Pesquise o código do produtos</label>
-              <input type="text" name="field_search" id="txt-search" placeholder="Search customer code">
+              <label class="sr-only" for="txt-search">Search product code</label>
+              <input type="text" name="field_search" id="txt-search" placeholder="Search product code">
               <button name="search-product" id="img-search" onclick="return search()"></button>
             </form>
           <?php } ?>
